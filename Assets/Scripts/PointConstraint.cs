@@ -5,28 +5,10 @@ using Utils;
 
 namespace Utils
 {
-	public class PointConstraint : MonoBehaviour
+	public class PointConstraint : ConstraintBase
 	{
-		protected Vector3 initPosition;
-		public Vector3 InitPosition
-		{
-			get { return initPosition; }
-		}
-
 		[SerializeField]
-		protected PointConstraint parentObject = null;
-		[SerializeField]
-		private bool attachParent = false;
-
-		void Awake()
-		{
-			initPosition = (gameObject.transform as Transform).position;
-			OnAwake();
-		}
-
-		protected virtual void OnAwake()
-		{
-		}
+		protected bool attachParent = false;
 
 		void Update()
 		{
@@ -36,8 +18,10 @@ namespace Utils
 			if (attachParent)
 			{
 				gameObject.transform.position = parentObject.transform.position;
-				gameObject.transform.rotation = parentObject.transform.rotation;
-				return;
+			}
+			else
+			{
+				gameObject.transform.position = parentObject.transform.position - parentObject.InitPosition + InitPosition;
 			}
 		}
 	}
