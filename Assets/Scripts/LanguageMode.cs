@@ -2,42 +2,46 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Utils;
 
-public enum Lang
+namespace Utils
 {
-	JPN,
-	ENG
-}
-
-public class LanguageMode : ImageLoader
-{
-	private static List<LanguageMode> instances = new List<LanguageMode>();
-	public static List<LanguageMode> Instances
+	public enum Lang
 	{
-		get { return instances; }
+		JPN,
+		ENG
 	}
 
-	public override string ParentAbsPath
+	public class LanguageMode : ImageLoader
 	{
-		get
+		private static List<LanguageMode> instances = new List<LanguageMode>();
+		public static List<LanguageMode> Instances
 		{
-			return Mode.ToString() + "/" + base.ParentAbsPath;
+			get { return instances; }
 		}
-	}
 
-	private Lang mode = Lang.JPN;
-	public Lang Mode
-	{
-		get { return mode; }
-		set
+		public override string ParentAbsPath
 		{
-			mode = value;
-			LoadImage();
+			get
+			{
+				return Mode.ToString() + "/" + base.ParentAbsPath;
+			}
 		}
-	}
 
-	void Awake()
-	{
-		instances.Add(this);
+		private Lang mode = Lang.JPN;
+		public Lang Mode
+		{
+			get { return mode; }
+			set
+			{
+				mode = value;
+				LoadImage();
+			}
+		}
+
+		void Awake()
+		{
+			instances.Add(this);
+		}
 	}
 }

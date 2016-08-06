@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
-
 using System.Collections.Generic;
+using Utils;
 
-public class ImageLoaderMng : MonoBehaviour
+namespace Utils
 {
-	[SerializeField]
-	private bool dummyCreateMode = false;
-
-	private List<LanguageMode> loaderComponents = new List<LanguageMode>();
-
-	void Awake()
+	public class ImageLoaderMng : MonoBehaviour
 	{
-		loaderComponents = new List<LanguageMode>(GameObject.FindObjectsOfType<LanguageMode>());
+		[SerializeField]
+		private bool dummyCreateMode = false;
 
-		foreach(var loader in loaderComponents)
+		private List<LanguageMode> loaderComponents = new List<LanguageMode>();
+
+		void Awake()
 		{
-			loader.dummyCreateMode = dummyCreateMode;
+			loaderComponents = new List<LanguageMode>(GameObject.FindObjectsOfType<LanguageMode>());
+
+			foreach (var loader in loaderComponents)
+			{
+				loader.dummyCreateMode = dummyCreateMode;
+			}
 		}
 	}
 }
