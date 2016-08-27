@@ -7,6 +7,7 @@ using Utils;
 
 namespace Utils
 {
+	[RequireComponent(typeof(RectTransform))]
 	[RequireComponent(typeof(Image))]
 	public class ImageLoader : MonoBehaviour
 	{
@@ -125,7 +126,23 @@ namespace Utils
 
 			if (isDummy && !File.Exists(filePath))
 			{
-				File.Create(filePath).Close();
+				// 画像としてDummyファイルを保存
+				Rect size = GetComponent<RectTransform>().rect;
+				Texture2D img = new Texture2D((int)size.width, (int)size.height, TextureFormat.RGB24, false);
+
+				var col = new Color(1f / 255f * 242f, 1f / 255f * 44f, 1f / 255f * 90f);
+				var colArray = img.GetPixels();
+
+				for (var i = 0; i < colArray.Length; ++i)
+					colArray[i] = col;
+
+				img.SetPixels(colArray);
+				img.Apply();
+
+				byte[] bytes = img.EncodeToPNG();
+				Object.Destroy(img);
+
+				File.WriteAllBytes(filePath, bytes);
 			}
 		}
 
@@ -140,6 +157,9 @@ namespace Utils
 			// Resourceを取得
 			if (!spriteItems.ContainsKey(filePath))
 			{
+				// TextureTypeをSpriteに変更する必要がある
+				// →TextureImporter必須❓
+
 				var sp = Resources.Load<Sprite>(resourceFilePath);
 				image.sprite = sp;
 				spriteItems.Add(filePath, sp);
