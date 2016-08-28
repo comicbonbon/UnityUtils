@@ -14,12 +14,6 @@ namespace Utils
 
 	public class LanguageMode : ImageLoader
 	{
-		private static List<LanguageMode> instances = new List<LanguageMode>();
-		public static List<LanguageMode> Instances
-		{
-			get { return instances; }
-		}
-
 		public override string ParentAbsPath
 		{
 			get
@@ -35,13 +29,8 @@ namespace Utils
 			set
 			{
 				mode = value;
-				LoadImage();
+				LoadSprite();
 			}
-		}
-
-		void Awake()
-		{
-			instances.Add(this);
 		}
 	}
 }

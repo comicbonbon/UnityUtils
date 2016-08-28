@@ -97,7 +97,7 @@ namespace Utils
 			else
 			{
 				// 画像読み込み
-				LoadImage();
+				LoadSprite();
 			}
 		}
 
@@ -146,7 +146,7 @@ namespace Utils
 			}
 		}
 
-		public void LoadImage()
+		public void LoadSprite()
 		{
 			if (!File.Exists(filePath))
 				return;
@@ -161,6 +161,8 @@ namespace Utils
 
 				var sp = Resources.Load<Sprite>(resourceFilePath);
 				image.sprite = sp;
+
+				// 一度読み込んだSpriteの保持は切り替え処理側(LangageMode等)で行ったほうが良いと思われる
 				spriteItems.Add(filePath, sp);
 			}
 			else
