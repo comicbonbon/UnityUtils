@@ -157,8 +157,7 @@ namespace Utils
 			// Resourceを取得
 			if (!spriteItems.ContainsKey(filePath))
 			{
-				// TextureTypeをSpriteに変更する必要がある
-				// →TextureImporter必須❓
+				// Editorで読み込まれた時点でSpriteに自動変換しているのでここでは気にしない
 
 				var sp = Resources.Load<Sprite>(resourceFilePath);
 				image.sprite = sp;
