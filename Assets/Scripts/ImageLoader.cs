@@ -83,8 +83,6 @@ namespace Utils
 			}
 		}
 
-		private Dictionary<string, Sprite> spriteItems = new Dictionary<string, Sprite>();
-
 		void Start()
 		{
 			parentAbsPath = GetParentAbsPath(gameObject.transform);
@@ -154,21 +152,20 @@ namespace Utils
 			Debug.Log("FilePath : " + filePath);
 			Debug.Log("RefPath : " + resourceFilePath);
 
-			// Resourceを取得
-			if (!spriteItems.ContainsKey(filePath))
-			{
-				// Editorで読み込まれた時点でSpriteに自動変換しているのでここでは気にしない
+			// 非同期読み込み
+			StartCoroutine(LoadSpriteProcess());
+		}
 
-				var sp = Resources.Load<Sprite>(resourceFilePath);
-				image.sprite = sp;
+		private IEnumerator LoadSpriteProcess()
+		{
+			var request = Resources.LoadAsync<Sprite>(resourceFilePath);
 
-				// 一度読み込んだSpriteの保持は切り替え処理側(LangageMode等)で行ったほうが良いと思われる
-				spriteItems.Add(filePath, sp);
-			}
-			else
+			while(!request.isDone)
 			{
-				image.sprite = spriteItems[filePath];
+				yield return null;
 			}
+
+			image.sprite = request.asset as Sprite;
 			image.SetNativeSize();
 		}
 	}
