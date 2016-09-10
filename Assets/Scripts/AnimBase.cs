@@ -22,9 +22,21 @@ namespace Utils
 		public Action PositionCompleteEvent = null;
 		public Action FadeCompleteEvent = null;
 
+		private Vector2 anchored
+		{
+			get
+			{
+				return (gameObject.transform as RectTransform).anchoredPosition;
+            }
+			set
+			{
+				(gameObject.transform as RectTransform).anchoredPosition = value;
+			}
+		}
+
 		void Awake()
 		{
-			initPosition = (gameObject.transform as RectTransform).anchoredPosition;
+			initPosition = anchored;
 			OnAwake();
 		}
 
@@ -40,23 +52,23 @@ namespace Utils
 			var parentTrans = parentObject.transform as RectTransform;
 			var dPos = parentObject.InitPosition - parentTrans.anchoredPosition;
 
-			(gameObject.transform as RectTransform).anchoredPosition = initPosition - dPos;
+			anchored = initPosition - dPos;
 		}
 
 		public virtual void Initialize()
 		{
-			(this.gameObject.transform as RectTransform).anchoredPosition = initPosition;
+			anchored = initPosition;
 		}
 
-		public void Animation(float time, Vector2 target)
+		public void Animation(float time, Vector2 target, iTween.EaseType ease = iTween.EaseType.easeOutCubic)
 		{
 			iTween.tweens.Clear();
 
 			iTween.ValueTo(this.gameObject, iTween.Hash(
-				"from", (this.gameObject.transform as RectTransform).anchoredPosition,
+				"from", anchored,
 				"to", target,
 				"time", time,
-				"easetype", "easeOutCubic",
+				"easetype", ease,
 				"onupdatetarget", this.gameObject,
 				"onupdate", "OnUpdateAnimation",
 				"oncomplete", "OnPositionCompleteProcess"));
